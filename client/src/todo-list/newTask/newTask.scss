@@ -1,0 +1,13 @@
+.newTask {
+    width: 100%;
+    display: block;
+    border: none;
+    border-bottom: 1px solid #e9e9e9;
+    margin-top: 20px;
+    padding: 10px 7px;
+    font-size: 17px;
+
+    &:focus {
+        outline: none;
+    }
+}
