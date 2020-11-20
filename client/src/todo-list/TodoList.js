@@ -144,7 +144,7 @@ export function TodoList() {
                 </div>
                 <NewTask></NewTask>
                 <div className="todo-list">
-                    {getNoTaskCreated()}
+                {getNoTaskCreated()}
                 <Switch>
                     <Route exact path="/active">
                         { 
