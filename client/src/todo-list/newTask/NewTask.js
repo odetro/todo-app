@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../AppContext';
 import './newTask.scss';
+import { AiOutlinePlus } from 'react-icons/ai';
 
 async function createNewTask (task) {
     const requestOptions = {
@@ -8,7 +9,7 @@ async function createNewTask (task) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ "task": task ? task : "not valid task" })
     };
-    const result = await fetch('/todos', requestOptions);
+    const result = await fetch('/api/todos', requestOptions);
     return result.json();
 }
 
@@ -32,6 +33,11 @@ export function NewTask() {
       };
 
     return (
-        <input className="newTask" placeholder="new task..." onChange={handleChange} onKeyPress={handleSubmit}></input>
+        <div className="newTask-container">
+            <div className="newTask">
+                <AiOutlinePlus />
+                <input className="newTaskInput" placeholder="new task..." onChange={handleChange} onKeyPress={handleSubmit}></input>
+            </div>
+        </div>
     )
 }

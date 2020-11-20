@@ -4,15 +4,68 @@ import { Task } from './task/Task';
 import { NewTask } from './newTask/NewTask';
 import { AppContext } from '../AppContext';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
+import { AiOutlineDelete, AiFillDelete } from 'react-icons/ai';
 
 async function fetchTodos() {
-    const result = await fetch('/todos');
+    const result = await fetch('/api/todos');
     return result.json();
 }
 
 async function deleteCompletedTask(){
-    const result = await fetch(`/todos/delete/all`, {method: 'DELETE'});
+    const result = await fetch(`/api/todos/delete/all`, {method: 'DELETE'});
     return result.json();
+}
+
+function returnDay (day) {
+    switch(day){
+        case 0: 
+            return ("Sunday"); 
+        case 1: 
+            return ("Monday");
+        case 2: 
+            return ("Tuesday"); 
+        case 3: 
+            return ("Wednesday"); 
+        case 4: 
+            return ("Thursday"); ;
+        case 5: 
+            return ("Friday");
+        case 6: 
+            return ("Saturday");
+        default:
+            return ("Welcome")
+    }
+}
+
+function returnMonth (month) {
+    switch(month){
+        case 0: 
+            return ("January"); 
+        case 1: 
+            return ("February");
+        case 2: 
+            return ("March"); 
+        case 3: 
+            return ("April"); 
+        case 4: 
+            return ("May"); ;
+        case 5: 
+            return ("June");
+        case 6: 
+            return ("July");
+        case 7: 
+            return ("August");
+        case 8: 
+            return ("September");
+        case 9: 
+            return ("October");
+        case 10: 
+            return ("November");
+        case 11: 
+            return ("December");
+        default:
+            return ("Not valid month")
+    }
 }
 
 export function TodoList() {
@@ -43,42 +96,55 @@ export function TodoList() {
             }
         get();
     },[taskSubmitted, taskChanged]);
+    
+    let myDate = new Date(); 
+    let dayName = returnDay(myDate.getDay());
+    let dayNum = myDate.getDate();
+    let month = returnMonth(myDate.getMonth());
 
-    if (todos.length <= 0) {
-        return (
-        <div className="todo-container">
-            <h2>My To Do List</h2>
-            <div className="todo-details">
-                <div className="nolist-container">
-                    <div className="todo-list">
-                        <p>Enter new task to start</p> 
-                        <NewTask></NewTask>
-                    </div>
+    function getClearBtn() {
+        if (todosCompleted.length) {
+            return (
+                <div className="clear">
+                    <button className="clearComplete" onClick={e => {deleteCompletedTask().then(setTaskChanged(!taskChanged))}}>Clear Completed</button>
+                    <AiOutlineDelete className="icon" />
+                    <AiFillDelete className="iconHover" />
                 </div>
-            </div>
-        </div>
-        )
+            )
+        }
+    }
+
+    function getNoTaskCreated() {
+        if (!todos.length) {
+            return (
+                <p className="center">No tasks created yet</p>
+            )
+        }
     }
 
     return ( 
         <AppContext.Provider value={appContextValues}>
             <BrowserRouter>
             <div className="todo-container">
-                <h2>My To Do List</h2>
-                <div className="todo-details">
-                    <div className="open-tasks">
-                        <span> {todosLeft} tasks left </span>
-                    </div>
-                    <div className="filter">
-                        <Link to="/" className="filterBtn">All</Link>
-                        <Link to="/active" className="filterBtn">Active</Link>
-                        <Link to="/completed" className="filterBtn">Completed</Link>
-                    </div>
-                    <div className="clearAll">
-                        <button className="clear" onClick={e => {deleteCompletedTask().then(setTaskChanged(!taskChanged))}}>Clear Completed</button>
+                <div className="header">
+                    <h2>{dayName}, <span className="day">{dayNum}th</span> </h2>
+                    <span className="month"> {month} </span>
+                    <div className="todo-details-container" hidden={todos.length === 0}>
+                        <div className="todo-details">
+                            <div className="open-tasks">
+                                <span> {todosLeft} tasks left </span>
+                            </div>
+                            <div className="filter">
+                                <Link to="/" className="filterBtn">All</Link>
+                                <Link to="/active" className="filterBtn">Active</Link>
+                                <Link to="/completed" className="filterBtn">Completed</Link>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <NewTask></NewTask>
                 <div className="todo-list">
+                    {getNoTaskCreated()}
                 <Switch>
                     <Route exact path="/active">
                         { 
@@ -109,8 +175,8 @@ export function TodoList() {
                     </Route>
                 </Switch>
                 </div>
-                <NewTask></NewTask>
             </div>
+            {getClearBtn()}
             </BrowserRouter>
         </AppContext.Provider>
     )

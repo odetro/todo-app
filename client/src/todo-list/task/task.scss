@@ -1,9 +1,8 @@
 .task {
-    border-bottom: 1px solid #e9e9e9;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px;
+    margin-bottom: 15px;
 
     .container {
         display: block;
@@ -21,7 +20,6 @@
 
     &:hover {
         .taskAction {
-            text-decoration: underline;
             display: flex;
             font-size: 15px;
             
@@ -29,6 +27,8 @@
                 border: none;
                 background-color: transparent;
                 cursor: pointer;
+                color: #8F94A2;
+                font-size: 14px;
 
                 &:focus {
                     outline: none;
@@ -36,6 +36,36 @@
 
                 .edit {
                     margin-right: 10px;
+                }
+            }
+
+            .deleteOne {
+                .iconHover {
+                    display: none;
+                }
+
+                &:hover {
+                    .icon {
+                        display: none;
+                    }
+                    .iconHover {
+                        display: inline;
+                    }
+                }
+            }
+
+            .editOne {
+                .iconHover {
+                    display: none;
+                }
+
+                &:hover {
+                    .icon {
+                        display: none;
+                    }
+                    .iconHover {
+                        display: inline;
+                    }
                 }
             }
         }

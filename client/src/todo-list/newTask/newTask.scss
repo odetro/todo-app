@@ -1,13 +1,29 @@
-.newTask {
+.newTask-container {  
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    display: block;
-    border: none;
+    align-self: center;
     border-bottom: 1px solid #e9e9e9;
-    margin-top: 20px;
-    padding: 10px 7px;
-    font-size: 17px;
+    margin-bottom: 20px;
 
-    &:focus {
-        outline: none;
+    .newTask {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        font-size: 25px;
+        padding-left: 30px;
+        max-width: 80%;
+
+        .newTaskInput {
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            margin-left: 17px;
+        
+            &:focus {
+                outline: none;
+            }
+        }
     }
 }

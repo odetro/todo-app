@@ -10,6 +10,6 @@ const todosRoute = require('./routes/todo.route');
 app.set("json spaces",2);
 //app.use(cors());
 app.use(express.json());
-app.use("/todos", todosRoute);
+app.use("/api/todos", todosRoute);
 
 app.listen(3001);

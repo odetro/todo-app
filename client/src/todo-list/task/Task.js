@@ -1,6 +1,7 @@
 import './task.scss';
 import React, { useContext } from 'react';
 import { AppContext } from '../../AppContext';
+import { AiOutlineDelete, AiFillDelete, AiOutlineEdit, AiTwotoneEdit} from 'react-icons/ai';
 
 async function taskStatus (id, completed) {
     const requestOptions = {
@@ -8,12 +9,12 @@ async function taskStatus (id, completed) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"completed": completed})
     };
-    const result = await fetch(`/todos/${id}`, requestOptions);
+    const result = await fetch(`/api/todos/${id}`, requestOptions);
     return result.json();
 }
 
 async function deleteTask (id) {
-    const result = await fetch(`/todos/delete/${id}`, {method: 'DELETE'});
+    const result = await fetch(`/api/todos/delete/${id}`, {method: 'DELETE'});
     return result.json();
 }
 
@@ -23,7 +24,7 @@ async function editTask (id, task) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"task": task})
     };
-    const result = await fetch(`/todos/${id}`, requestOptions);
+    const result = await fetch(`/api/todos/${id}`, requestOptions);
     return result.json();
 }
 
@@ -44,8 +45,18 @@ export function Task(props) {
                 {props.task}
             </label>
             <div className="taskAction">
-                <button className="edit" onClick={e => editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged))}>edit</button>
-                <button className="delete" onClick={e => deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged))}>delete</button>
+                <div className="editOne">
+                    <button className="edit" onClick={e => editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged))}>
+                        <AiOutlineEdit className="icon"/>
+                        <AiTwotoneEdit className="iconHover"/>
+                    </button>
+                </div>
+                <div className="deleteOne">
+                    <button className="delete" onClick={e => deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged))}>
+                        <AiOutlineDelete className="icon"/>
+                        <AiFillDelete className="iconHover"/>
+                    </button>
+                </div>
             </div>
         </div>)
 }
