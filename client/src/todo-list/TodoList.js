@@ -1,10 +1,141 @@
 import React, { useState, useEffect } from 'react';
-import './todo-list.scss';
 import { Task } from './task/Task';
 import { NewTask } from './newTask/NewTask';
 import { AppContext } from '../AppContext';
-import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import { AiOutlineDelete, AiFillDelete } from 'react-icons/ai';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100%;
+    background-color: white;
+    align-items: center;
+    border-radius: 10px;
+    position: absolute;
+`
+const Header = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid #e9e9e9;
+`
+const H2 = styled.h2`
+    color: #7160b7;
+    align-self: end;
+    margin: 30px 0 4px 45px;
+`
+const Day = styled.span`
+    font-weight: 500;
+`
+const Month = styled.span`
+    display: flex;
+    align-self: end;
+    margin-left: 45px;
+    color: #b3aad8;
+    font-size: 16px;
+`
+const DetailsContainer = styled.div`
+    display: flex;
+    width: 100%;
+`
+const Details = styled.div`
+    margin: 45px 45px 18px 45px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    color: #C5C7E4;
+`
+const OpenTasks = styled.div`
+    color: #8F94A2;
+    font-size: 14px;
+`
+const Filter = styled.div`
+    display: flex;
+    font-size: 12px;
+`
+const StyledNavLink = styled(NavLink)`
+    border: none;
+    background-color: #E0F3FF;
+    color: #8F94A2;
+    margin-left: 10px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+
+    :hover {
+        background-color: #d0edff;
+        color: #8F94A2;
+    }
+    :focus {
+        outline: none;
+        color: #5a678a;
+        background-color: #cdecff;
+    }
+
+    &.active {
+        color: #5a678a;
+        background-color: #cdecff;
+    }
+`
+const TodosList = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 0 30px 30px 30px;
+    align-self: center;
+    margin-bottom: 30px;
+`
+const Center = styled.p`
+    text-align: center;
+`
+const Clear = styled.div`
+    display: flex;
+    align-items: center;
+    color: #F8979A;
+    right: 25px;
+    padding-bottom: 20px;
+    cursor: pointer;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 10px;
+
+    :hover {
+        AiFillDelete {
+            display: inline;
+        }
+    }
+`
+const ClearComplete = styled.button`
+    border: none;
+    background-color: transparent;
+    color: #F8979A;
+    margin-left: 7px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    :focus {
+        outline: none;
+    }
+`
+const DefaultBtn = styled.div`
+    display: inline;
+    ${Clear}:hover & {
+        display: none;
+    }
+`
+const HoverBtn = styled.div`
+    display: none;
+    ${Clear}:hover & {
+        display: inline;
+    }
+`
 
 async function fetchTodos() {
     const result = await fetch('/api/todos');
@@ -16,59 +147,19 @@ async function deleteCompletedTask(){
     return result.json();
 }
 
-function returnDay (day) {
-    switch(day){
-        case 0: 
-            return ("Sunday"); 
-        case 1: 
-            return ("Monday");
-        case 2: 
-            return ("Tuesday"); 
-        case 3: 
-            return ("Wednesday"); 
-        case 4: 
-            return ("Thursday"); ;
-        case 5: 
-            return ("Friday");
-        case 6: 
-            return ("Saturday");
-        default:
-            return ("Welcome")
-    }
-}
-
-function returnMonth (month) {
-    switch(month){
-        case 0: 
-            return ("January"); 
-        case 1: 
-            return ("February");
-        case 2: 
-            return ("March"); 
-        case 3: 
-            return ("April"); 
-        case 4: 
-            return ("May"); ;
-        case 5: 
-            return ("June");
-        case 6: 
-            return ("July");
-        case 7: 
-            return ("August");
-        case 8: 
-            return ("September");
-        case 9: 
-            return ("October");
-        case 10: 
-            return ("November");
-        case 11: 
-            return ("December");
-        default:
-            return ("Not valid month")
+function dayFormat(day) {
+    switch (parseInt(day)) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
     }
 }
 
 export function TodoList() {
+
+    const dayjs = require('dayjs');
+    let now = dayjs();
 
     const [todos, setTodos] = useState([]);
     const [todosLeft, setTodosLeft] = useState(0);
@@ -96,20 +187,15 @@ export function TodoList() {
             }
         get();
     },[taskSubmitted, taskChanged]);
-    
-    let myDate = new Date(); 
-    let dayName = returnDay(myDate.getDay());
-    let dayNum = myDate.getDate();
-    let month = returnMonth(myDate.getMonth());
 
     function getClearBtn() {
         if (todosCompleted.length) {
             return (
-                <div className="clear">
-                    <button className="clearComplete" onClick={e => {deleteCompletedTask().then(setTaskChanged(!taskChanged))}}>Clear Completed</button>
-                    <AiOutlineDelete className="icon" />
-                    <AiFillDelete className="iconHover" />
-                </div>
+                <Clear>
+                    <ClearComplete onClick={e => {deleteCompletedTask().then(setTaskChanged(!taskChanged))}}>Clear Completed</ClearComplete>
+                    <DefaultBtn><AiOutlineDelete /></DefaultBtn>
+                    <HoverBtn><AiFillDelete /></HoverBtn>
+                </Clear>
             )
         }
     }
@@ -117,66 +203,59 @@ export function TodoList() {
     function getNoTaskCreated() {
         if (!todos.length) {
             return (
-                <p className="center">No tasks created yet</p>
+                <Center>No tasks created yet</Center>
             )
         }
+    }
+
+    function getTasks(myTodos) {
+        return (
+            myTodos.map(todo => <Task 
+            key = { todo._id }
+            id = { todo._id }
+            task={ todo.task } 
+            completed={ todo.completed }></Task>
+            )
+        )
     }
 
     return ( 
         <AppContext.Provider value={appContextValues}>
             <BrowserRouter>
-            <div className="todo-container">
-                <div className="header">
-                    <h2>{dayName}, <span className="day">{dayNum}th</span> </h2>
-                    <span className="month"> {month} </span>
-                    <div className="todo-details-container" hidden={todos.length === 0}>
-                        <div className="todo-details">
-                            <div className="open-tasks">
+            <Container>
+                <Header>
+                    <H2>{now.format("dddd")}, <Day>{now.format("D")}{dayFormat(now.format("D"))}</Day> </H2>
+                    <Month> {now.format("MMMM")} </Month>
+                    <DetailsContainer hidden={todos.length === 0}>
+                        <Details>
+                            <OpenTasks>
                                 <span> {todosLeft} tasks left </span>
-                            </div>
-                            <div className="filter">
-                                <Link to="/" className="filterBtn">All</Link>
-                                <Link to="/active" className="filterBtn">Active</Link>
-                                <Link to="/completed" className="filterBtn">Completed</Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <NewTask></NewTask>
-                <div className="todo-list">
+                            </OpenTasks>
+                            <Filter>
+                                <StyledNavLink to="/" exact >All</StyledNavLink>
+                                <StyledNavLink to="/active" exact >Active</StyledNavLink>
+                                <StyledNavLink to="/completed" exact >Completed</StyledNavLink>
+                            </Filter>
+                        </Details>
+                    </DetailsContainer>
+                </Header>
+                <NewTask />
+                <TodosList>
                 {getNoTaskCreated()}
                 <Switch>
                     <Route exact path="/active">
-                        { 
-                            todosActive.map(todo => <Task 
-                                key = { todo._id }
-                                id = { todo._id }
-                                task={ todo.task } 
-                                completed={ todo.completed }></Task>)
-                        }
+                        { getTasks(todosActive) }
                     </Route>
                     <Route exact path="/completed">
-                        { 
-                            todosCompleted.map(todo => <Task 
-                                key = { todo._id }
-                                id = { todo._id }
-                                task={ todo.task } 
-                                completed={ todo.completed }></Task>)
-                        }
+                        { getTasks(todosCompleted) }
                     </Route>
                     <Route exact path="/">
-                        { 
-                            todos.map(todo => <Task 
-                                key = { todo._id }
-                                id = { todo._id }
-                                task={ todo.task } 
-                                completed={ todo.completed }></Task>)
-                        }
+                        { getTasks(todos) }
                     </Route>
                 </Switch>
-                </div>
-            </div>
-            {getClearBtn()}
+                </TodosList>
+                {getClearBtn()}
+            </Container>
             </BrowserRouter>
         </AppContext.Provider>
     )
