@@ -4,6 +4,31 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { taskModel } = require(`../models/todo.model`);
 
+router.get("/active-categories", async (req, res) => { 
+    const docs = await taskModel
+        .aggregate([
+            {
+                $match: {
+                    completed:false
+                }
+            },
+            {
+                $group: {
+                    _id: '$category',
+                }
+            }
+        ])
+        .exec();
+    res.json(docs);
+});
+
+router.get("/:category", async (req, res) => { 
+    const docs = await taskModel
+        .find({"category": req.params.category})
+        .exec();
+    res.json(docs);
+});
+
 router.get("/", async (req, res) => { 
     const docs = await taskModel
         .find({})
@@ -15,20 +40,22 @@ router.post("/", async (req, res) => {
     const doc = await taskModel
         .create({
             "task": req.body.task,
+            "category": req.body.category,
             "completed": false
         })
     res.json(doc);
 });
 
-router.delete("/delete/all", async (req, res) => { 
+router.delete("/delete/all/:category", async (req, res) => { 
     const doc = await taskModel
         .deleteMany({
-            completed: true
+            "category": req.params.category,
+            "completed": true
         })
     .then(function(){ 
-        return(doc); // Success 
+        return(res.json(doc)); // Success 
     }).catch(function(error){ 
-        return(error); // Failure 
+        return(res.json(error)); // Failure 
     }); 
 });
 

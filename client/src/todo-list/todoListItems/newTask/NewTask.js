@@ -3,17 +3,20 @@ import { AppContext } from '../../AppContext';
 import './newTask.scss';
 import { AiOutlinePlus } from 'react-icons/ai';
 
-async function createNewTask (task) {
+async function createNewTask (task, category) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ "task": task ? task : "Error: Not Valid Task" })
+        body: JSON.stringify({ 
+            "task": task ? task : "Error: Not Valid Task",
+            "category": category
+        })
     };
     const result = await fetch('/api/todos', requestOptions);
     return result.json();
 }
 
-export function NewTask() {
+export function NewTask(props) {
 
     const [newTask, setNewTask] = useState("new task...");
     const context = useContext(AppContext) || {};
@@ -25,8 +28,8 @@ export function NewTask() {
     const handleSubmit = (e) => {
         if (e.charCode === 13 && e.target.value.length > 0) {
             e.preventDefault();
-            createNewTask(newTask);
-            if (context.setTaskSubmitted) { //not working with empty db
+            createNewTask(newTask, props.category);
+            if (context.setTaskSubmitted) { 
                 context.setTaskSubmitted(newTask)
             };
             setNewTask("");

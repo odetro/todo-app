@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 const taskSchema = new Schema(
     {
         task: {type: String},
+        category: {type: String},
         completed: {type: Boolean}
     }
 );
