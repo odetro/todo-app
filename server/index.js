@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require("path");
 const app = express();
 const { connect } = require('./db');
 
@@ -11,5 +12,11 @@ app.set("json spaces",2);
 app.use(express.json());
 app.use("/api/todos", todosRoute);
 app.use("/api/notes", notesRoute);
+app.use("/", express.static(path.join(__dirname, '../client/build')));
 
-app.listen(3001);
+let port = 3001;
+if(process.env.PORT) {
+    port = process.env.PORT;
+}
+
+app.listen(port);
