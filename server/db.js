@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const dbUrl = 'mongodb://localhost:27017/todo-app';
+
 if (process.env.DB_URL) {
     dbUrl = process.env.DB_URL;
 }
