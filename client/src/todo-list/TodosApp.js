@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AppContext } from './AppContext';
-import { TodoListItems } from './todoListItems/TodoListItems';
+import { TodosContainer } from './todosContainer/TodosContainer';
 import { BrowserRouter, NavLink, Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineBook, AiOutlineHome, AiOutlineStar, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineMessage, AiOutlineCalendar, AiOutlineBulb} from 'react-icons/ai';
@@ -95,7 +95,7 @@ async function fetchActiveCategories() {
     return resultArr;
 }
 
-export function TodoListApp() {
+export function TodosApp() {
 
     const [activeCategories, setActiveCategories] = useState([]);
     const [category, setCategory] = useState("")
@@ -164,11 +164,9 @@ export function TodoListApp() {
                 <List>
                     <Switch>
                         <Route path="/:category">
-                            <TodoListItems />
+                            <TodosContainer />
                         </Route>
-                        <Route exact path="/" >
-                            <Redirect to="/general" />
-                        </Route>
+                        <Redirect from="/" to="/general" />
                     </Switch>
                 </List>
             </Container>

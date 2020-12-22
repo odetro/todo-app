@@ -46,7 +46,7 @@ export function Note(props) {
     return (
         <Contanier>
             <NoteDiv>
-                <Textarea className="noteInput" rows="10" cols="33" placeholder="Write notes here..." onChange={handleChange}>{props.note}</Textarea>
+                <Textarea rows="10" cols="33" placeholder="Write notes here..." onChange={handleChange}>{props.note}</Textarea>
             </NoteDiv>
         </Contanier>
     )

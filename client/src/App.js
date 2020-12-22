@@ -1,7 +1,7 @@
 import './App.css';
 import { CalendarView } from './calander/CalendarView';
 import { Notes } from './notes/notes';
-import { TodoListApp } from './todo-list/TodoListApp';
+import { TodosApp } from './todo-list/TodosApp';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
 
       </div>
       <div className="app-right">
-        <TodoListApp />
+        <TodosApp />
       </div>
       <div className="app-left">
         <div className="app-left-top">

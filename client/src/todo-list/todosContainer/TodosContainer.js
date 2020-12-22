@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Task } from './task/Task';
+import { Todos } from './Todos';
 import { NewTask } from './newTask/NewTask';
 import { AppContext } from '../AppContext';
-import { BrowserRouter, Switch, Route, NavLink, useRouteMatch, useParams } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, NavLink, useRouteMatch, useParams, Redirect } from 'react-router-dom';
 import { AiOutlineDelete, AiFillDelete } from 'react-icons/ai';
 import styled from 'styled-components';
 
@@ -155,42 +155,38 @@ function dayFormat(day) {
     }
 }
 
-export function TodoListItems(props) {
+export function TodosContainer() {
 
     const context = useContext(AppContext);
 
     const dayjs = require('dayjs');
     let now = dayjs();
   
-    const params = useParams();
+    const paramsURL = useParams();
     const { path, url } = useRouteMatch();
-    const [category, setCategory ] = useState(params.category)
+    const [category, setCategory ] = useState(paramsURL.category)
 
     const [todos, setTodos] = useState([]);
-    const [todosLeft, setTodosLeft] = useState(0);
-    const [todosActive, setTodosActive] = useState([]);
-    const [todosCompleted, setTodosCompleted] = useState([]);
+    const [todosLeftLength, setTodosLeftLength] = useState(0);
 
     useEffect(() => {
-        if (params && params.category) {
-            setCategory(params.category);
+        if (paramsURL && paramsURL.category) {
+            setCategory(paramsURL.category);
         }
-    } , [params])
+    } , [paramsURL])
 
     useEffect(() => {
         console.log("updating app...")
         const get = async () => {
             const result = await fetchTodos(category);
             setTodos(result);
-            setTodosLeft(result.filter( r => !r.completed).length);
-            setTodosActive(result.filter( r => !r.completed));
-            setTodosCompleted(result.filter( r => r.completed));
+            setTodosLeftLength(result.filter( r => !r.completed).length);
             }
         get();
     },[context.taskSubmitted, context.taskChanged, category]);
 
     function getClearBtn() {
-        if (todosCompleted.length) {
+        if (todos.length > 0 && todos.length > todosLeftLength) {
             return (
                 <Clear>
                     <ClearComplete onClick={e => {deleteCompletedTask(category).then(context.setTaskChanged(!context.taskChanged))}}>Clear Completed</ClearComplete>
@@ -209,17 +205,6 @@ export function TodoListItems(props) {
         }
     }
 
-    function getTasks(myTodos) {
-        return (
-            myTodos.map(todo => <Task 
-            key = { todo._id }
-            id = { todo._id }
-            task={ todo.task } 
-            completed={ todo.completed }></Task>
-            )
-        )
-    }
-
     return ( 
         <BrowserRouter>
             <Container>
@@ -229,7 +214,7 @@ export function TodoListItems(props) {
                     <DetailsContainer hidden={todos.length === 0}>
                         <Details>
                             <OpenTasks>
-                                <span> {todosLeft} tasks left </span>
+                                <span> {todosLeftLength} tasks left </span>
                             </OpenTasks>
                             <Filter>
                                 <StyledNavLink to={`${url}/all`} >All</StyledNavLink>
@@ -243,14 +228,11 @@ export function TodoListItems(props) {
                 <TodosList>
                     {getNoTaskCreated()}
                     <Switch>
-                        <Route exact path={`${path}/active`}>
-                            { getTasks(todosActive) }
+                        <Route exact path={`${path}/:status`}>
+                            <Todos todos={todos} />
                         </Route>
-                        <Route exact path={`${path}/completed`}>
-                            { getTasks(todosCompleted) }
-                        </Route>
-                        <Route exact path={`${path}/all`}>
-                            { getTasks(todos) }
+                        <Route path={`${path}/`}>
+                            <Redirect to={`${url}/all`} />
                         </Route>
                     </Switch>
                 </TodosList>
