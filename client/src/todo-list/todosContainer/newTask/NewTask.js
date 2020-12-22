@@ -53,10 +53,10 @@ export function NewTask(props) {
         setNewTask(e.target.value);
       };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         if (e.charCode === 13 && e.target.value.length > 0) {
             e.preventDefault();
-            trackPromise(createNewTask(newTask, props.category));
+            await trackPromise(createNewTask(newTask, props.category));
             if (context.setTaskSubmitted) { 
                 context.setTaskSubmitted(newTask)
             };

@@ -79,9 +79,9 @@ async function editTask (id, task) {
 export function Task(props) {
     const context = useContext(AppContext);
 
-    const CheckboxChange = (e) => {
+    const CheckboxChange = async (e) => {
         const complete = !props.completed;
-        trackPromise(taskStatus(props.id, complete));
+        await trackPromise(taskStatus(props.id, complete));
         context.setTaskChanged(!context.taskChanged);
       };
 
@@ -94,17 +94,24 @@ export function Task(props) {
             </TaskHeader>
             <TaskAction>
                 <Action>
-                    <StyledButton onClick={e => trackPromise(editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged)))}>
+                    <StyledButton onClick={async (e) => {
+                            await trackPromise(editTask(props.id, prompt(props.task)));
+                            context.setTaskChanged(!context.taskChanged);
+                            }}>
                         <Icon><AiOutlineEdit /></Icon>
                         <IconHover><AiTwotoneEdit /></IconHover>
                     </StyledButton>
                 </Action>
                 <Action>
-                    <StyledButton onClick={e => trackPromise(deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged)))}>
+                    <StyledButton onClick={async (e) => {
+                            await trackPromise(deleteTask(props.id));
+                            context.setTaskChanged(!context.taskChanged);
+                            }}>
                         <Icon><AiOutlineDelete /></Icon>
                         <IconHover><AiFillDelete /></IconHover>
                     </StyledButton>
                 </Action>
             </TaskAction>
-        </TaskItem>)
+        </TaskItem>
+    )
 }

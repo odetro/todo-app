@@ -7,7 +7,6 @@ function App() {
   return (
     <div className="app-container">
       <div className="topbar">
-
       </div>
       <div className="app-right">
         <TodosApp />

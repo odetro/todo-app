@@ -179,7 +179,7 @@ export function TodosContainer() {
     useEffect(() => {
         console.log("updating app...")
         const get = async () => {
-            const result = await fetchTodos(category);
+            const result = await trackPromise(fetchTodos(category));
             setTodos(result);
             setTodosLeftLength(result.filter( r => !r.completed).length);
             }
@@ -190,7 +190,10 @@ export function TodosContainer() {
         if (todos.length > 0 && todos.length > todosLeftLength) {
             return (
                 <Clear>
-                    <ClearComplete onClick={e => {trackPromise(deleteCompletedTask(category).then(context.setTaskChanged(!context.taskChanged)))}}>Clear Completed</ClearComplete>
+                    <ClearComplete onClick={ async (e) => { 
+                        await trackPromise(deleteCompletedTask(category));
+                        context.setTaskChanged(!context.taskChanged)
+                        }}>Clear Completed</ClearComplete>
                     <DefaultBtn><AiOutlineDelete /></DefaultBtn>
                     <HoverBtn><AiFillDelete /></HoverBtn>
                 </Clear>
