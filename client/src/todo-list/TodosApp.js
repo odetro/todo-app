@@ -4,6 +4,8 @@ import { TodosContainer } from './todosContainer/TodosContainer';
 import { BrowserRouter, NavLink, Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiOutlineBook, AiOutlineHome, AiOutlineStar, AiOutlineShoppingCart, AiOutlinePhone, AiOutlineMessage, AiOutlineCalendar, AiOutlineBulb} from 'react-icons/ai';
+import Loader from 'react-loader-spinner';
+import { usePromiseTracker } from "react-promise-tracker";
 
 const Container = styled.div`
     display: flex;
@@ -84,6 +86,14 @@ const List = styled.div`
     top: 0;
     left: 10%;
 `
+const LoadingStatus = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+`
 
 async function fetchActiveCategories() {
     const result = await fetch(`/api/todos/active-categories`);
@@ -122,6 +132,16 @@ export function TodosApp() {
         }
         get();
     },[category, taskChanged, taskSubmitted])
+
+    const LoadingIndicator = props => {
+        const { promiseInProgress } = usePromiseTracker();
+        return (
+            promiseInProgress && 
+            <LoadingStatus>
+                <Loader type="Rings" color="#5351FB" height={80} width={80} />
+            </LoadingStatus>
+        );  
+    }
 
     return (
         <AppContext.Provider value={appContextValues}>
@@ -171,6 +191,7 @@ export function TodosApp() {
                 </List>
             </Container>
         </BrowserRouter>
+        <LoadingIndicator/>
         </AppContext.Provider>
     )
 }

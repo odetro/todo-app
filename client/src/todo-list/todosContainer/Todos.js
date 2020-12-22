@@ -14,7 +14,7 @@ export function Todos(params) {
     } , [paramsURL])
 
 
-    function getTasks(todos, status) {
+    function getTasksByStatus(todos, status) {
         switch (status) {
             case 'active':
                 return todos.filter( t => !t.completed);
@@ -24,17 +24,17 @@ export function Todos(params) {
                 return todos;
         }
     }
-        
-    let myTodos = getTasks(params.todos, status);
+
+    let myTodos = getTasksByStatus(params.todos, status);
 
     return (
-            myTodos.map(todo => 
+        myTodos.map(todo => 
             <Task 
                 key = { todo._id }
                 id = { todo._id }
                 task={ todo.task } 
                 completed={ todo.completed } 
             />
-            )
         )
+    )
 }

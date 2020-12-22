@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../../AppContext';
 import { AiOutlinePlus } from 'react-icons/ai';
 import styled from 'styled-components';
+import { trackPromise } from 'react-promise-tracker';
 
 const NewTaskContainer = styled.div`  
     display: flex;
@@ -55,7 +56,7 @@ export function NewTask(props) {
     const handleSubmit = (e) => {
         if (e.charCode === 13 && e.target.value.length > 0) {
             e.preventDefault();
-            createNewTask(newTask, props.category);
+            trackPromise(createNewTask(newTask, props.category));
             if (context.setTaskSubmitted) { 
                 context.setTaskSubmitted(newTask)
             };

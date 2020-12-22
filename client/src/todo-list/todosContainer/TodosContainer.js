@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Todos } from './Todos';
 import { NewTask } from './newTask/NewTask';
 import { AppContext } from '../AppContext';
+import { trackPromise } from 'react-promise-tracker';
 import { BrowserRouter, Switch, Route, NavLink, useRouteMatch, useParams, Redirect } from 'react-router-dom';
 import { AiOutlineDelete, AiFillDelete } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -189,7 +190,7 @@ export function TodosContainer() {
         if (todos.length > 0 && todos.length > todosLeftLength) {
             return (
                 <Clear>
-                    <ClearComplete onClick={e => {deleteCompletedTask(category).then(context.setTaskChanged(!context.taskChanged))}}>Clear Completed</ClearComplete>
+                    <ClearComplete onClick={e => {trackPromise(deleteCompletedTask(category).then(context.setTaskChanged(!context.taskChanged)))}}>Clear Completed</ClearComplete>
                     <DefaultBtn><AiOutlineDelete /></DefaultBtn>
                     <HoverBtn><AiFillDelete /></HoverBtn>
                 </Clear>

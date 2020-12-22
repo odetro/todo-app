@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../../AppContext';
+import { trackPromise } from 'react-promise-tracker';
 import { AiOutlineDelete, AiFillDelete, AiOutlineEdit, AiTwotoneEdit} from 'react-icons/ai';
 import styled from 'styled-components';
 
@@ -80,9 +81,8 @@ export function Task(props) {
 
     const CheckboxChange = (e) => {
         const complete = !props.completed;
-        taskStatus(props.id, complete);
+        trackPromise(taskStatus(props.id, complete));
         context.setTaskChanged(!context.taskChanged);
-        console.log("changed value");
       };
 
     return (
@@ -94,13 +94,13 @@ export function Task(props) {
             </TaskHeader>
             <TaskAction>
                 <Action>
-                    <StyledButton onClick={e => editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged))}>
+                    <StyledButton onClick={e => trackPromise(editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged)))}>
                         <Icon><AiOutlineEdit /></Icon>
                         <IconHover><AiTwotoneEdit /></IconHover>
                     </StyledButton>
                 </Action>
                 <Action>
-                    <StyledButton onClick={e => deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged))}>
+                    <StyledButton onClick={e => trackPromise(deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged)))}>
                         <Icon><AiOutlineDelete /></Icon>
                         <IconHover><AiFillDelete /></IconHover>
                     </StyledButton>
