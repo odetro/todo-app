@@ -1,7 +1,34 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../AppContext';
-import './newTask.scss';
 import { AiOutlinePlus } from 'react-icons/ai';
+import styled from 'styled-components';
+
+const NewTaskContainer = styled.div`  
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-self: center;
+    border-bottom: 1px solid #e9e9e9;
+    margin-bottom: 20px;
+`
+const NewTaskItem = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 25px;
+    padding-left: 30px;
+    max-width: 80%;
+`
+const NewTaskInput = styled.input`
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    margin-left: 17px;
+    &:focus {
+        outline: none;
+    }
+`
 
 async function createNewTask (task, category) {
     const requestOptions = {
@@ -38,11 +65,11 @@ export function NewTask(props) {
       };
 
     return (
-        <div className="newTask-container">
-            <div className="newTask">
+        <NewTaskContainer>
+            <NewTaskItem>
                 <AiOutlinePlus />
-                <input className="newTaskInput" placeholder="new task..." onChange={handleChange} onKeyPress={handleSubmit}></input>
-            </div>
-        </div>
+                <NewTaskInput placeholder="new task..." onChange={handleChange} onKeyPress={handleSubmit} />
+            </NewTaskItem>
+        </NewTaskContainer>
     )
 }

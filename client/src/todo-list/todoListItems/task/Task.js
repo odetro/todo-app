@@ -1,7 +1,54 @@
-import './task.scss';
 import React, { useContext } from 'react';
 import { AppContext } from '../../AppContext';
 import { AiOutlineDelete, AiFillDelete, AiOutlineEdit, AiTwotoneEdit} from 'react-icons/ai';
+import styled from 'styled-components';
+
+const TaskItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+`
+const TaskHeader = styled.label`
+    display: block;
+    display: flex;
+    align-items: center;
+`
+const StyledInput = styled.input`
+    margin-right: 17px;
+`
+const TaskAction = styled.div`
+    display: none;
+    ${TaskItem}:hover & {
+        display: flex;
+        font-size: 15px;
+    }
+`
+const StyledButton = styled.button`
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #8F94A2;
+    font-size: 14px;
+    margin-right: 10px;
+    &:focus {
+        outline: none;
+    }
+`
+const Action = styled.div``
+
+const Icon = styled.div`
+    display: inline;
+    ${Action}:hover & {
+        display: none;
+    }
+`
+const IconHover = styled.div`
+    display: none;
+    ${Action}:hover & {
+        display: inline;
+    }
+`
 
 async function taskStatus (id, completed) {
     const requestOptions = {
@@ -38,25 +85,26 @@ export function Task(props) {
         console.log("changed value");
       };
 
-    return (<div className="task">
-            <label className="container">
-                <input type="checkbox" checked={props.completed ? "checked" : ""} onChange={CheckboxChange}/>
+    return (
+        <TaskItem>
+            <TaskHeader>
+                <StyledInput type="checkbox" checked={props.completed ? "checked" : ""} onChange={CheckboxChange}/>
                 <span className="checkmark"></span>
                 {props.task}
-            </label>
-            <div className="taskAction">
-                <div className="editOne">
-                    <button className="edit" onClick={e => editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged))}>
-                        <AiOutlineEdit className="icon"/>
-                        <AiTwotoneEdit className="iconHover"/>
-                    </button>
-                </div>
-                <div className="deleteOne">
-                    <button className="delete" onClick={e => deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged))}>
-                        <AiOutlineDelete className="icon"/>
-                        <AiFillDelete className="iconHover"/>
-                    </button>
-                </div>
-            </div>
-        </div>)
+            </TaskHeader>
+            <TaskAction>
+                <Action>
+                    <StyledButton onClick={e => editTask(props.id, prompt(props.task)).then(context.setTaskChanged(!context.taskChanged))}>
+                        <Icon><AiOutlineEdit /></Icon>
+                        <IconHover><AiTwotoneEdit /></IconHover>
+                    </StyledButton>
+                </Action>
+                <Action>
+                    <StyledButton onClick={e => deleteTask(props.id).then(context.setTaskChanged(!context.taskChanged))}>
+                        <Icon><AiOutlineDelete /></Icon>
+                        <IconHover><AiFillDelete /></IconHover>
+                    </StyledButton>
+                </Action>
+            </TaskAction>
+        </TaskItem>)
 }
