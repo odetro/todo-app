@@ -83,6 +83,7 @@ router.put("/:id", async (req, res) => {
         res.json(doc);
     }
     if (body.task != undefined) {
+        console.log("hey there");
         const doc = await taskModel
             .findOneAndUpdate(
                 {_id: req.params.id},
@@ -92,7 +93,7 @@ router.put("/:id", async (req, res) => {
             .exec();
         res.json(doc);
     }
-
+    
 });
 
 module.exports = router;

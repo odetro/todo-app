@@ -137,7 +137,7 @@ export function TodosApp() {
         return (
             promiseInProgress && 
             <LoadingStatus>
-                <Loader type="Rings" color="#5351FB" height={80} width={80} />
+                <Loader type="ThreeDots" color="#5351FB" height={80} width={80} />
             </LoadingStatus>
         );  
       }
