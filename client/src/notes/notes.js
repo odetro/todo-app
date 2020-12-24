@@ -22,6 +22,10 @@ const H3 = styled.h3`
     color: #7160b7;
     align-self: end;
     margin: 30px 0 4px 45px;
+
+    @media only screen and (max-width: 1000px) {
+        margin: 25px 0 4px 30px;
+    }
 `
 
 async function fetchNotes() {

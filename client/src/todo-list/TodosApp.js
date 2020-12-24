@@ -9,19 +9,21 @@ import Loader from 'react-loader-spinner';
 
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     min-height: 100%;
     align-items: center;
 `
 const Filter = styled.div`
-    width: 15%;
-    height: 100%;
-    position: absolute;
-    top: 20px;
-    right: 90%;
+    min-width: 15%;
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
+    margin-top: 20px;
+
+    @media only screen and (max-width: 1000px) {
+        min-width: 0;
+    }
 `
 const CategoryDiv = styled.div`
     display: flex;
@@ -77,14 +79,17 @@ const Text = styled.div`
 
     ${CategoryDiv}:hover & {
         display: flex;
+
+        @media only screen and (max-width: 1000px) {
+            display: none;
+        }
     }
 `
 const List = styled.div`
-    width: 90%;
+    width: 85%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 10%;
+    display: flex;
+    align-self: flex-start;
 `
 const LoadingStatus = styled.div`
     display: flex;

@@ -17,5 +17,5 @@ Additional libraries in use:
  - Styled-components
  - CalanderView
 
-To be run at local with concurrently please run "npm run dev",
+To be run at local with concurrently please run "npm run dev", <br />
 port 3000 for the application, port 3001 for the API (proxy in use).

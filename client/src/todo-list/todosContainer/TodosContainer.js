@@ -11,11 +11,9 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: 100%;
     background-color: white;
     align-items: center;
     border-radius: 10px;
-    position: absolute;
 `
 const Header = styled.div`
     display: flex;
@@ -51,10 +49,19 @@ const Details = styled.div`
     width: 100%;
     align-items: center;
     color: #C5C7E4;
+
+    @media only screen and (max-width: 500px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 `
 const OpenTasks = styled.div`
     color: #8F94A2;
     font-size: 14px;
+
+    @media only screen and (max-width: 500px) {
+        margin-bottom: 10px;
+    }
 `
 const Filter = styled.div`
     display: flex;
@@ -84,11 +91,17 @@ const StyledNavLink = styled(NavLink)`
         color: #5a678a;
         background-color: #cdecff;
     }
+
+    @media only screen and (max-width: 500px) {
+        margin-left: 0;
+        margin-right: 10px;
+    }
 `
 const TodosList = styled.div`
     display: flex;
     flex-direction: column;
     width: 90%;
+    min-height: 230px;
     padding: 0 30px 30px 30px;
     align-self: center;
     margin-bottom: 30px;
@@ -100,12 +113,11 @@ const Clear = styled.div`
     display: flex;
     align-items: center;
     color: #F8979A;
-    right: 25px;
-    padding-bottom: 20px;
     cursor: pointer;
     justify-content: flex-end;
-    position: absolute;
-    bottom: 10px;
+    align-self: flex-end;
+    padding-right: 20px;
+    padding-bottom: 20px;
 
     :hover {
         AiFillDelete {

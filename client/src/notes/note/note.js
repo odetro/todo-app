@@ -13,6 +13,7 @@ const NoteDiv = styled.div`
     margin-top: 30px;
     display: flex;
     align-items: center;
+    padding: 0 15px;
 `
 const Textarea = styled.textarea`
     width: 100%;
