@@ -13,6 +13,7 @@ const Container = styled.div`
     width: 100%;
     min-height: 100%;
     align-items: center;
+    justify-content: center;
 `
 const Filter = styled.div`
     min-width: 15%;
@@ -23,6 +24,9 @@ const Filter = styled.div`
 
     @media only screen and (max-width: 1000px) {
         min-width: 0;
+    }
+    @media only screen and (max-width: 600px) {
+        display: none;
     }
 `
 const CategoryDiv = styled.div`
@@ -65,7 +69,7 @@ const Icon = styled.div`
     padding-left: 4px;
 `
 const ActiveTodosDot = styled.div`
-    width: 8px;
+    min-width: 8px;
     height: 8px;
     background-color: #FF5722;
     border-radius: 50%;
@@ -90,6 +94,9 @@ const List = styled.div`
     height: 100%;
     display: flex;
     align-self: flex-start;
+    @media only screen and (max-width: 1000px) {
+        width: 100%;
+    }
 `
 const LoadingStatus = styled.div`
     display: flex;

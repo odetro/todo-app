@@ -25,6 +25,10 @@ const TaskAction = styled.div`
         display: flex;
         font-size: 15px;
     }
+
+    @media only screen and (max-width: 1000px) {
+        display: flex;
+    }
 `
 const StyledButton = styled.button`
     border: none;
